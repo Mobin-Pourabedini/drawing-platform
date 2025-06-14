@@ -17,6 +17,7 @@ interface BoardProps {
 }
 
 const Board: React.FC<BoardProps> = ({ selectedTool }) => {
+    const [paths, setPaths] = useState<string[]>([]);
     const [rawPoints, setRawPoints] = useState<number[][]>([]);
     const isDrawingWithPen = useRef(false);
     const svgRef = useRef<SVGSVGElement | null>(null);
@@ -65,10 +66,10 @@ const Board: React.FC<BoardProps> = ({ selectedTool }) => {
 
     const handleMouseUpPen = () => {
         isDrawingWithPen.current = false;
+        setPaths(prev => [...prev, getSvgPathFromStroke(getStroke(rawPoints, { size: 4 }))]);
+        setRawPoints([])
     };
 
-    const strokePoints = getStroke(rawPoints, { size: 4 });
-    const pathData = getSvgPathFromStroke(strokePoints);
 
     return (
         <svg
@@ -80,7 +81,8 @@ const Board: React.FC<BoardProps> = ({ selectedTool }) => {
             height="100%"
             style={{ border: "1px solid #ccc", background: "#fafafa" }}
         >
-            <path d={pathData} fill="black" />
+            {paths.map((d, index) => (<path key={index} d={d} fill="black"/>))}
+            <path key="path-in-progress" d={getSvgPathFromStroke(getStroke(rawPoints, { size: 4 }))}/>
         </svg>
     );
 };
