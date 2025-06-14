@@ -18,7 +18,7 @@ export function drawShape(shape: Shape, key: string): JSX.Element | null {
             const height = Math.abs(y2 - y1);
             const x = Math.min(x1, x2);
             const y = Math.min(y1, y2);
-            return <rect key={key} x={x} y={y} width={width} height={height} fill="black" />;
+            return <rect key={key} x={x} y={y} width={width} height={height} fill="none" stroke="black" strokeWidth={2}/>;
         }
 
         case ShapeTypes.Circle: {
@@ -26,7 +26,7 @@ export function drawShape(shape: Shape, key: string): JSX.Element | null {
                 Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)) / 2;
             const cx = (x1 + x2) / 2;
             const cy = (y1 + y2) / 2;
-            return <circle key={key} cx={cx} cy={cy} r={radius} fill="black" />;
+            return <circle key={key} cx={cx} cy={cy} r={radius} fill="none" stroke="black" strokeWidth={2} />;
         }
 
         case ShapeTypes.Triangle: {
@@ -39,7 +39,7 @@ export function drawShape(shape: Shape, key: string): JSX.Element | null {
             const rightY = leftY;
 
             const points = `${topX},${topY} ${leftX},${leftY} ${rightX},${rightY}`;
-            return <polygon key={key} points={points} fill="black" />;
+            return <polygon key={key} points={points} fill="none" stroke="black" strokeWidth={2} />;
         }
 
         default:

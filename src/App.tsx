@@ -1,7 +1,7 @@
 import './App.css'
 import {Layout, Radio, type RadioChangeEvent, Space} from 'antd'
 import {EditOutlined} from '@ant-design/icons';
-import {CircleIcon, SquareIcon, TriangleIcon} from '@icons/shapes'
+import {CircleIcon, SquareIcon, TriangleIcon} from '@icons/shapeIcons.tsx'
 import Board from '@components/board';
 import {useState} from "react";
 import {Tools} from '@enums/tools.enum';
