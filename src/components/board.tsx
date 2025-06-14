@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import getStroke from "perfect-freehand";
 import {Tools} from "@enums/tools.enum"
 
@@ -16,36 +16,69 @@ interface BoardProps {
     selectedTool: Tools
 }
 
-const Board: React.FC<BoardProps> = ({selectedTool}) => {
-    const [rawPoints, setRawPoints] = useState<number[][]>([
-        [10, 10, 0.5],
-        [15, 15, 0.6],
-        [20, 25, 0.7],
-        [25, 30, 0.8],
-        [30, 35, 1],
-    ]);
+const Board: React.FC<BoardProps> = ({ selectedTool }) => {
+    const [rawPoints, setRawPoints] = useState<number[][]>([]);
+    const isDrawingWithPen = useRef(false);
+    const svgRef = useRef<SVGSVGElement | null>(null);
 
-    function handleAction(e: React.MouseEvent<SVGSVGElement, MouseEvent>){
-        setRawPoints((prev) => [...prev, [e.pageX, e.pageY, 1]]);
-        console.log("handleAction: ", e);
+    const getSvgCoords = (e: React.MouseEvent<SVGSVGElement>) => {
+        const svg = svgRef.current!;
+        const rect = svg.getBoundingClientRect();
+        return [e.clientX - rect.left, e.clientY - rect.top];
+    };
+
+    const handleMouseDown = (e: React.MouseEvent<SVGSVGElement>) => {
+        switch (selectedTool) {
+            case Tools.Pen:
+                handleMouseDownPen(e);
+                break;
+        }
     }
 
-    // Generate stroke outline points from perfect-freehand
-    const strokeOutlinePoints = getStroke(rawPoints, {
-        size: 2,
-        thinning: 0.5,
-        smoothing: 0.5,
-        streamline: 0.5,
-    });
+    const handleMouseMove =  (e: React.MouseEvent<SVGSVGElement>) => {
+        switch (selectedTool) {
+            case Tools.Pen:
+                handleMouseMovePen(e);
+                break;
+        }
+    };
 
-    // Convert outline points to SVG path string
-    const pathData = getSvgPathFromStroke(strokeOutlinePoints);
+    const handleMouseUp = () => {
+        switch (selectedTool) {
+            case Tools.Pen:
+                handleMouseUpPen();
+                break;
+        }
+    };
+
+    const handleMouseDownPen = (e: React.MouseEvent<SVGSVGElement>) => {
+        isDrawingWithPen.current = true;
+        const [x, y] = getSvgCoords(e);
+        setRawPoints([[x, y, 1]]);
+    };
+
+    const handleMouseMovePen = (e: React.MouseEvent<SVGSVGElement>) => {
+        if (!isDrawingWithPen.current) return;
+        const [x, y] = getSvgCoords(e);
+        setRawPoints(prev => [...prev, [x, y, 1]]);
+    };
+
+    const handleMouseUpPen = () => {
+        isDrawingWithPen.current = false;
+    };
+
+    const strokePoints = getStroke(rawPoints, { size: 4 });
+    const pathData = getSvgPathFromStroke(strokePoints);
 
     return (
-        <svg onClick={handleAction}
-            width="90%"
-            height="90%"
-            style={{ border: "1px solid #ccc", background: "#fafafa", margin: "auto"}}
+        <svg
+            ref={svgRef}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            width="100%"
+            height="100%"
+            style={{ border: "1px solid #ccc", background: "#fafafa" }}
         >
             <path d={pathData} fill="black" />
         </svg>
