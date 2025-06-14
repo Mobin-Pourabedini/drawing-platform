@@ -1,18 +1,18 @@
 import './App.css'
-import {Layout, Radio, Space, RadioChangeEvent} from 'antd'
-const {Content, Sider} = Layout;
-import { EditOutlined } from '@ant-design/icons';
-import {TriangleIcon, SquareIcon, CircleIcon} from '@icons/shapes'
+import {Layout, Radio, type RadioChangeEvent, Space} from 'antd'
+import {EditOutlined} from '@ant-design/icons';
+import {CircleIcon, SquareIcon, TriangleIcon} from '@icons/shapes'
 import Board from '@components/board';
-import React, {useState} from "react";
+import {useState} from "react";
+import {Tools} from '@enums/tools.enum';
+
+const {Content, Sider} = Layout;
 
 
 function App() {
-    const [selectedTool, setSelectedTool] = useState<string>();
-
+    const [selectedTool, setSelectedTool] = useState<Tools>(Tools.Pen);
     function toggleTool(e: RadioChangeEvent)  {
-        setSelectedTool(e.target.value);
-        console.log('Button clicked', e.target.value);
+        setSelectedTool(e.target.value as Tools);
     }
 
   return (
@@ -20,15 +20,15 @@ function App() {
         {/*<Header>This is the header</Header>*/}
         <Layout>
             <Content style={{backgroundColor: "aqua", display: "flex"}}>
-                <Board/>
+                <Board selectedTool={selectedTool} />
             </Content>
             <Sider width="fit-content" className="toolbox-sider">
-                <Radio.Group defaultValue="pen" onChange={toggleTool}>
+                <Radio.Group value={selectedTool} onChange={toggleTool}>
                     <Space direction="vertical">
-                        <Radio.Button value="pen"><EditOutlined/></Radio.Button>
-                        <Radio.Button value="tri"><TriangleIcon/></Radio.Button>
-                        <Radio.Button value="squ"><SquareIcon/></Radio.Button>
-                        <Radio.Button value="cir"><CircleIcon/></Radio.Button>
+                        <Radio.Button value={Tools.Pen}><EditOutlined/></Radio.Button>
+                        <Radio.Button value={Tools.Triangle}><TriangleIcon/></Radio.Button>
+                        <Radio.Button value={Tools.Square}><SquareIcon/></Radio.Button>
+                        <Radio.Button value={Tools.Circle}><CircleIcon/></Radio.Button>
                     </Space>
                 </Radio.Group>
             </Sider>

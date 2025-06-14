@@ -19,7 +19,6 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
@@ -29,7 +28,7 @@
       "@pages/*": ["pages/*"],
       "@assets/*": ["assets/*"],
       "@icons/*": ["icons/*"],
-      "@types/*": ["types/*"],
+      "@enums/*": ["enums/*"],
     }
   },
   "include": ["src"]
