@@ -1,5 +1,4 @@
-export enum Tools {
-    Pen = 'pen',
+export enum ShapeTypes {
     Triangle = 'triangle',
     Square = 'square',
     Circle = 'circle',
