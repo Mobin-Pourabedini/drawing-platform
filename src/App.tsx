@@ -1,34 +1,40 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import {Layout, Radio, Space, RadioChangeEvent} from 'antd'
+const {Content, Sider} = Layout;
+import { EditOutlined } from '@ant-design/icons';
+import {TriangleIcon, SquareIcon, CircleIcon} from '@icons/shapes'
+import Board from '@components/board';
+import React, {useState} from "react";
+
 
 function App() {
-  const [count, setCount] = useState(0)
+    const [selectedTool, setSelectedTool] = useState<string>();
+
+    function toggleTool(e: RadioChangeEvent)  {
+        setSelectedTool(e.target.value);
+        console.log('Button clicked', e.target.value);
+    }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Layout className="App-Layout">
+        {/*<Header>This is the header</Header>*/}
+        <Layout>
+            <Content style={{backgroundColor: "aqua", display: "flex"}}>
+                <Board/>
+            </Content>
+            <Sider width="fit-content" className="toolbox-sider">
+                <Radio.Group defaultValue="pen" onChange={toggleTool}>
+                    <Space direction="vertical">
+                        <Radio.Button value="pen"><EditOutlined/></Radio.Button>
+                        <Radio.Button value="tri"><TriangleIcon/></Radio.Button>
+                        <Radio.Button value="squ"><SquareIcon/></Radio.Button>
+                        <Radio.Button value="cir"><CircleIcon/></Radio.Button>
+                    </Space>
+                </Radio.Group>
+            </Sider>
+        </Layout>
+        {/*<Footer>This is the footer</Footer>*/}
+    </Layout>
   )
 }
 
