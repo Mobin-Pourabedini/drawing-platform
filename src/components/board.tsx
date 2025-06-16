@@ -16,9 +16,13 @@ function getSvgPathFromStroke(points: number[][]): string {
 
 interface BoardProps {
     selectedTool: Tools
+    paths: string[]
+    setPaths: React.Dispatch<React.SetStateAction<string[]>>;
+    shapes: shape[];
+    setShapes:  React.Dispatch<React.SetStateAction<shape[]>>;
 }
 
-type shape = {
+export type shape = {
     kind: ShapeTypes
     x1: number
     y1: number
@@ -41,9 +45,8 @@ function createShape(selectedTool: Tools, shapeStartingPoint: point, currX: numb
     };
 }
 
-const Board: React.FC<BoardProps> = ({ selectedTool }) => {
-    const [paths, setPaths] = useState<string[]>([]);
-    const [shapes, setShapes] = useState<shape[]>([]);
+const Board: React.FC<BoardProps> = ({ selectedTool, paths, setPaths, shapes, setShapes }) => {
+
     const [rawPoints, setRawPoints] = useState<number[][]>([]);
     const [shapeStartingPoint, setShapeStartingPoint] = useState<point>({x:0, y:0})
     const [shapeCurrPoint, setShapeCurrPoint] = useState<point>({x:0, y:0})
@@ -144,7 +147,7 @@ const Board: React.FC<BoardProps> = ({ selectedTool }) => {
             onMouseUp={handleMouseUp}
             width="100%"
             height="100%"
-            style={{ border: "1px solid #ccc", background: "#fafafa" }}
+            style={{ border: "1px solid #ccc", background: "#fafafa"}}
         >
             {paths.map((d, index) => (<path key={index} d={d} fill="black"/>))}
             <path key="path-in-progress" d={getSvgPathFromStroke(getStroke(rawPoints, { size: 4 }))}/>

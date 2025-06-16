@@ -1,0 +1,54 @@
+.painting-title {
+    cursor: pointer;
+    border: dotted 1px wheat;
+    color: wheat !important;
+    background-color: transparent;
+    width: 100%;
+    height: calc(100% - 10px);
+    overflow: hidden;
+    margin: 5px;
+    padding: 2px;
+    align-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 5px;
+}
+
+.painting-input {
+    color: white;
+    display: flex;
+    width: 100%;
+    height: calc(100% - 10px);
+    background-color: transparent;
+    margin: 5px;
+}
+
+.painting-input:hover {
+    display: flex;
+    width: 100%;
+    background-color: transparent;
+    border: solid 1px #9096fd;
+}
+
+.painting-input:focus {
+    display: flex;
+    width: 100%;
+    background-color: transparent;
+    border: solid 1px blue;
+}
+
+.painting-title-div {
+    max-width: 500px;
+    height: 100%;
+    margin: 5px;
+}
+
+.custom-ant-space {
+    height: 100%;
+}
+
+.ant-space-item {
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
