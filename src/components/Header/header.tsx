@@ -1,6 +1,6 @@
+import './header.css'
 import {Button, Space, Typography, Upload, type UploadProps} from "antd";
 import {Layout, Input} from "antd";
-import './header.css'
 import {useState} from "react";
 import {UploadOutlined} from "@ant-design/icons";
 const {Header} = Layout;
