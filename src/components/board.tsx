@@ -60,6 +60,55 @@ const Board: React.FC<BoardProps> = ({ selectedTool, paths, setPaths, shapes, se
         return [e.clientX - rect.left, e.clientY - rect.top];
     };
 
+    // Shape collision detection functions
+    const isPointInShape = (x: number, y: number, shape: shape): boolean => {
+        const { kind, x1, y1, x2, y2 } = shape;
+        const minX = Math.min(x1, x2);
+        const maxX = Math.max(x1, x2);
+        const minY = Math.min(y1, y2);
+        const maxY = Math.max(y1, y2);
+
+        switch (kind) {
+            case ShapeTypes.Square:
+                return x >= minX && x <= maxX && y >= minY && y <= maxY;
+
+            case ShapeTypes.Circle:
+                { const centerX = (x1 + x2) / 2;
+                const centerY = (y1 + y2) / 2;
+                const radius = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2)) / 2;
+                const distance = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
+                return distance <= radius; }
+
+            case ShapeTypes.Triangle:
+                // Simplified triangle collision - using bounding box
+                return x >= minX && x <= maxX && y >= minY && y <= maxY;
+
+            default:
+                return false;
+        }
+    };
+
+    const findShapeAtPoint = (x: number, y: number): number => {
+        // Search from last to first to prioritize top shapes
+        for (let i = shapes.length - 1; i >= 0; i--) {
+            if (isPointInShape(x, y, shapes[i])) {
+                return i;
+            }
+        }
+        return -1; // No shape found
+    };
+
+    const handleDoubleClick = (e: React.MouseEvent<SVGSVGElement>) => {
+        const [x, y] = getSvgCoords(e);
+        const shapeIndex = findShapeAtPoint(x, y);
+
+        if (shapeIndex !== -1) {
+            // Remove shape from array
+            setShapes(prev => prev.filter((_, index) => index !== shapeIndex));
+            console.log(`Shape at index ${shapeIndex} removed`);
+        }
+    };
+
     const handleMouseDown = (e: React.MouseEvent<SVGSVGElement>) => {
         console.log(`here we are ${selectedTool}`)
         switch (selectedTool) {
@@ -115,8 +164,12 @@ const Board: React.FC<BoardProps> = ({ selectedTool, paths, setPaths, shapes, se
 
     const handleMouseUpShape = (e: React.MouseEvent<SVGSVGElement>) => {
         const [currX, currY] = getSvgCoords(e);
-        setShapes(prev => [...prev,
-            createShape(selectedTool, shapeStartingPoint, currX, currY)])
+        const startX = shapeStartingPoint.x
+        const startY = shapeStartingPoint.y
+        if ((currX - startX)*(currX - startX) + (currY - startY)*(currY - startY) > 16) {
+            setShapes(prev => [...prev,
+                createShape(selectedTool, shapeStartingPoint, currX, currY)])
+        }
         isDrawingWithShape.current = false;
     }
 
@@ -138,13 +191,13 @@ const Board: React.FC<BoardProps> = ({ selectedTool, paths, setPaths, shapes, se
         setRawPoints([])
     };
 
-
     return (
         <svg
             ref={svgRef}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
+            onDoubleClick={handleDoubleClick}
             width="100%"
             height="100%"
             style={{ border: "1px solid #ccc", background: "#fafafa"}}

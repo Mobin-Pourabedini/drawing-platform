@@ -1,18 +1,18 @@
 # Draw Like Louie !!
-This React app provides a drawing board which supports some painting features such as vanilla pen, and some shapes such as triangle, circle and square.
+این اپلیکیشن React یک تخته نقاشی ارائه می‌دهد که از برخی ویژگی‌های نقاشی مانند قلم معمولی و برخی اشکال مانند مثلث، دایره و مربع پشتیبانی می‌کند.
 
 ## SVG Board
-the drawing board is designed using svg which stores the drawings using vectorized data, this allows for a high-quality representation and efficient data storage.
+تخته نقاشی با استفاده از svg طراحی شده است که نقاشی‌ها را با استفاده از داده‌های برداری ذخیره می‌کند، این امکان نمایش با کیفیت بالا و ذخیره‌سازی کارآمد داده‌ها را فراهم می‌کند.
 
 ## Import & Export
-you can export the drawing with all the details and title and later import that file to this app and restore the exact Board!
+شما می‌توانید نقاشی را با تمام جزئیات و عنوان export کنید و بعداً آن فایل را به این اپ import کنید و دقیقاً همان Board را بازیابی کنید!
 
-### number of each shape
-since this project has been started as a `web programming assignment` it currently has a footer for counting number of each shape.
+### تعداد هر شکل
+از آنجایی که این پروژه به عنوان یک `web programming assignment` شروع شده است، در حال حاضر فوتری برای شمارش تعداد هر شکل دارد.
 
-### structure
-the main components of this app are `Board`, `ToolBox`, `BoardHeader` and others.
-data storage in the same session is handled using react states, and they'll be wiped out on refresh.
-since svg has been used the pen drawings are stored as a list of points in the Board.
-shapes are stores as the starting and ending point of the gesture used for creating them, based on the shape `kind` a different shape is created.
-unfortunately coloring and pen size are not currently supported.
+### ساختار
+اجزای اصلی این اپ `Board`، `ToolBox`، `BoardHeader` و سایر موارد هستند.
+ذخیره‌سازی داده در همان session با استفاده از react states مدیریت می‌شود و آنها در هنگام refresh پاک خواهند شد.
+از آنجایی که svg استفاده شده است، نقاشی‌های قلم به عنوان لیستی از نقاط در Board ذخیره می‌شوند.
+اشکال به عنوان نقطه شروع و پایان حرکتی که برای ایجاد آنها استفاده شده ذخیره می‌شوند، بر اساس `kind` شکل، شکل متفاوتی ایجاد می‌شود.
+متأسفانه رنگ‌آمیزی و اندازه قلم در حال حاضر پشتیبانی نمی‌شوند.
