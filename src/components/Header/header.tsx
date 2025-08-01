@@ -1,6 +1,5 @@
 import './header.css'
-import {Button, Space, Typography, Upload, type UploadProps} from "antd";
-import {Layout, Input} from "antd";
+import {Button, Space, Typography, Upload, type UploadProps, Input, Layout} from "antd";
 import {useState} from "react";
 import {UploadOutlined} from "@ant-design/icons";
 const {Header} = Layout;
@@ -12,11 +11,16 @@ interface HeaderProps {
     setTitle: (title: string) => void;
     onExport: () => void;
     onImport: (file: File) => void;
+    isLoggedIn: boolean;
+    onLogin: () => void;
+    onLogout: () => void;
+    onSave: () => void;
 }
 
-export const BoardHeader: React.FC<HeaderProps> = ({title, setTitle, onExport, onImport}) => {
+export const BoardHeader: React.FC<HeaderProps> = (
+    {title, setTitle, onExport, onImport, isLoggedIn, onLogin, onLogout, onSave}
+) => {
     const [isEditing, setIsEditing] = useState(false);
-
     const [tempTitle, setTempTitle] = useState(title);
 
     const handleSubmitTitle = () => {
@@ -43,6 +47,11 @@ export const BoardHeader: React.FC<HeaderProps> = ({title, setTitle, onExport, o
                 </Button>
             </Upload>
             {/*<Button onClick={onImport}>Import</Button>*/}
+            {isLoggedIn
+                ? <Button onClick={onLogout}>Logout</Button>
+                : <Button onClick={onLogin}>Login</Button>
+            }
+            <Button type="primary" onClick={onSave}>Save</Button>
         </Space>
         <Space style={{float: "right"}} className="custom-ant-space">
             <div className="painting-title-div">
